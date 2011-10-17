@@ -47,6 +47,27 @@
 		$default_date = strtotime("+2 weeks Saturday");
 	?>
 	<label>Date:<input type="text" name="date" value="<?php print date("Y-m-d", $default_date); ?>" /></label>
+	<?php 
+		$date_type = $booking_criteria->date_selection->date_type;
+		if($date_type == "DATE_NIGHTS" || $date_type == "DATE_DAYS"):
+			$min_hdur = 7;
+			$max_hdur = 21;
+			$def_hdur = (int)$result->tour->duration;
+			?>
+			<select name="hdur">
+				<?php 
+					for($i=$min_hdur; $i<=$max_hdur; $i++):
+						?>
+						<option value="<?php print $i; ?>"<?php 
+						$i==$def_hdur ? print ' selected="selected"' : null;
+						?>><?php print $i; ?></option>
+						<?php
+					endfor;
+				?>
+			</select>
+			<?
+		endif;
+	?>
 	
 	<input type="hidden" name="rates" value="<?php print implode(",", $rates); ?>" />
 	<input type="hidden" name="tour" value="<?php print $tour; ?>" />
