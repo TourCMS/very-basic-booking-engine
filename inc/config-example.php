@@ -1,4 +1,7 @@
 <?php
+	// Include the TourCMS API wrapper
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/tourcms.php');
+	
 	// Marketplace account ID
 	// Leave this as zero if you are a supplier (i.e. not a Marketplace partner)
 	$marketplace_account_id = 0;

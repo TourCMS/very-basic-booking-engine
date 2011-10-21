@@ -21,7 +21,7 @@
 	isset($_GET['tour']) ? $tour = (int)$_GET['tour'] : exit();
 	
 	// Query the TourCMS API, get back all the info on this Tour/Hotel
-	$result = $tourcms->show_tour($tour, $channel);
+	$result = $tourcms->show_tour($tour, $channel_id);
 	
 	// Jump straight to the bit of XML related to making a new booking panel
 	// includes rate and date info
@@ -91,26 +91,8 @@
 	
 	<input type="submit" name="submit" value="Go" />
 </form>
-
-
-<!-- Debug -->
-	<div id="debug">
-		<form>
-			<label><input type="radio" name="showdebug" value="none" checked /> Hide debug info</label>
-			<label><input type="radio" name="showdebug" value="simplexml" /> Show SimpleXML object</label>
-			<label><input type="radio" name="showdebug" value="rawxml" /> Show raw XML</label>
-		</form>
-		<pre class="simplexml"><?php print_r($result); ?></pre>
-		<pre class="rawxml"><?php 
-			// Add indentation to XML output
-			$dom = new DOMDocument('1.0');
-			$dom->preserveWhiteSpace = false;
-			$dom->formatOutput = true;
-			$dom->loadXML($result->asXML());
-			echo htmlspecialchars($dom->saveXML());
-		 ?></pre>
-	</div>
 	
 <?php 
+	include_once("inc/debug.php");
 	include_once("inc/bottom.php");
  ?>

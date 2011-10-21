@@ -47,7 +47,7 @@
 		}
 	}
 	
-	$result = $tourcms->check_tour_availability($qs, $tour, $channel);
+	$result = $tourcms->check_tour_availability($qs, $tour, $channel_id);
 	
 	
 	isset($result->available_components->component) ? $num_components = count($result->available_components->component) : $num_components = 0;
@@ -110,24 +110,9 @@ endif;
 ?>
 <input type="submit" name="submit" value="Go" />
 </form>
-<!-- Debug -->
-	<div id="debug">
-		<form>
-			<label><input type="radio" name="showdebug" value="none" checked /> Hide debug info</label>
-			<label><input type="radio" name="showdebug" value="simplexml" /> Show SimpleXML object</label>
-			<label><input type="radio" name="showdebug" value="rawxml" /> Show raw XML</label>
-		</form>
-		<pre class="simplexml"><?php print_r($result); ?></pre>
-		<pre class="rawxml"><?php 
-			// Add indentation to XML output
-			$dom = new DOMDocument('1.0');
-			$dom->preserveWhiteSpace = false;
-			$dom->formatOutput = true;
-			$dom->loadXML($result->asXML());
-			echo htmlspecialchars($dom->saveXML());
-		 ?></pre>
-	</div>
+
 	
 <?php 
+	include_once("inc/debug.php");
 	include_once("inc/bottom.php");
  ?>

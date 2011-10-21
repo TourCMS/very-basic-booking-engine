@@ -18,7 +18,7 @@
 	include('inc/config.php');
 	
 	// Search all Tours/Hotels
-	$result = $tourcms->search_tours("", $channel);
+	$result = $tourcms->search_tours("", $channel_id);
 
 	// Print out an error if there is one
 	// Otherwise loop through Tours/Hotels and display them
@@ -35,25 +35,8 @@
 	
 	?>
 	</ul>
-	
-	<!-- Debug -->
-	<div id="debug">
-		<form>
-			<label><input type="radio" name="showdebug" value="none" checked /> Hide debug info</label>
-			<label><input type="radio" name="showdebug" value="simplexml" /> Show SimpleXML object</label>
-			<label><input type="radio" name="showdebug" value="rawxml" /> Show raw XML</label>
-		</form>
-		<pre class="simplexml"><?php print_r($result); ?></pre>
-		<pre class="rawxml"><?php 
-			// Add indentation to XML output
-			$dom = new DOMDocument('1.0');
-			$dom->preserveWhiteSpace = false;
-			$dom->formatOutput = true;
-			$dom->loadXML($result->asXML());
-			echo htmlspecialchars($dom->saveXML());
-		 ?></pre>
-	</div>
-	
+
 <?php 
+	include_once("inc/debug.php");
 	include_once("inc/bottom.php");
  ?>

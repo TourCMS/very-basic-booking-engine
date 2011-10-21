@@ -8,25 +8,21 @@
 			$("input[name='showdebug']").change(function() {
 				var sel = $(this).val();
 				
-				switch (self) {
+				switch (sel) {
 				   case "rawxml":
-				      $(".simplexml").hide();
-				      $(".rawxml").show();
-				      break;
+				      $(".simplexml").slideUp('fast', function() {
+				          $(".rawxml").slideDown("slow");
+				        });				      
+				     break;
 				   case "simplexml":
-				      $(".rawxml").hide();
-				      $(".simplexml").show();
+				      $(".rawxml").slideUp('fast', function() {
+				          $(".simplexml").slideDown("slow");
+				        });
 				      break;
 				   default:
-				      $(".rawxml").hide();
-				      $(".simplexml").hide();
+				      $(".rawxml").slideUp('fast');
+				      $(".simplexml").slideUp('fast');
 				      break;
-				}
-				
-				if( sel == "none") {
-				} else {
-					$("." + sel).show();
-					$("." + sel).show();
 				}
 			});
 		});

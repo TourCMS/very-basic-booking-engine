@@ -19,7 +19,7 @@
 	$url_data->addChild('response_url', str_replace("{tour_id}", (int)$_GET['tour'], $response_url)); 
 	
 	// Send the response URL to TourCMS
-	$result = $tourcms->get_booking_redirect_url($url_data, $channel);
+	$result = $tourcms->get_booking_redirect_url($url_data, $channel_id);
 	
 	// TourCMS should have returned a URL back to us, get that
 	$redirect_url = $result->url->redirect_url;
