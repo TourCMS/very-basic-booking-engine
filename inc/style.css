@@ -1,0 +1,56 @@
+html {
+    overflow-y: scroll;
+}
+
+html, body {
+	font-family: helvetica, arial, verdana, sans-serif;
+	color: #222;
+	background: #efefef;
+}
+
+h1 {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans","Helvetica Neue", Arial, Helvetica, sans-serif;	
+}
+
+
+#debug form {
+	background: #667;
+	color: white;
+	padding: 6px;
+	border-radius: 4px;
+	font-size: 12px;
+	margin-top: 40px;
+	margin-bottom: 0;
+}
+
+#debug form label {
+	cursor: pointer;
+}
+
+a {
+	color: #009;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+pre {
+	background: white;
+	padding: 10px;
+	
+	font-family: "Lucida Console", Monaco, monospace;
+	line-height: 140%;
+	font-size: 12px;
+	
+	overflow: hidden;
+	color: #444;
+	margin-top: 0;
+	margin-left: 4px;
+	margin-right: 4px;
+	border-radius: 0px 0px 4px 4px;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	}
