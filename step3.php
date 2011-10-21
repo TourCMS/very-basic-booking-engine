@@ -1,7 +1,18 @@
 <?php
-	include('../post/tourcms-php/tourcms.php');
-
-	include('config.php');
+	/*
+		step3.php
+		
+		
+		Calls "Check Availability" to see actual live availability
+		If there's a choice then that's displayed to the customer
+		Boxes for customer details displayed
+		
+	*/
+	
+	include_once("inc/top.php");
+	
+	// Include the config file
+	include('inc/config.php');
 	
 	//$qs = "id=" . $tour;
 	$qs = "";
@@ -42,6 +53,7 @@
 	isset($result->available_components->component) ? $num_components = count($result->available_components->component) : $num_components = 0;
 	
 ?>
+<h1>Availability confirmed, enter passenger details</h1>
 <form method="post" action="step4.php" />
 <?php 
 if($marketplace_account_id == 0) :
@@ -89,7 +101,7 @@ endif;
 				<input type="text" name="surname[]" value="Bloggs" /></label>
 				<?php if($i==0): ?>
 				<label>Email
-				<input type="email" name="email" value="ps@tourcms.com" />
+				<input type="email" name="email" value="test@example.com" />
 				</label>
 				<?php endif; ?>
 			</fieldset>
@@ -98,4 +110,24 @@ endif;
 ?>
 <input type="submit" name="submit" value="Go" />
 </form>
-<pre><?php print_r($result); ?></pre>
+<!-- Debug -->
+	<div id="debug">
+		<form>
+			<label><input type="radio" name="showdebug" value="none" checked /> Hide debug info</label>
+			<label><input type="radio" name="showdebug" value="simplexml" /> Show SimpleXML object</label>
+			<label><input type="radio" name="showdebug" value="rawxml" /> Show raw XML</label>
+		</form>
+		<pre class="simplexml"><?php print_r($result); ?></pre>
+		<pre class="rawxml"><?php 
+			// Add indentation to XML output
+			$dom = new DOMDocument('1.0');
+			$dom->preserveWhiteSpace = false;
+			$dom->formatOutput = true;
+			$dom->loadXML($result->asXML());
+			echo htmlspecialchars($dom->saveXML());
+		 ?></pre>
+	</div>
+	
+<?php 
+	include_once("inc/bottom.php");
+ ?>

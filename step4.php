@@ -1,7 +1,18 @@
 <?php
-	include('../post/tourcms-php/tourcms.php');
-
-	include('config.php');
+	/*
+		step4.php
+		
+		
+		Calls "Check Availability" to see actual live availability
+		If there's a choice then that's displayed to the customer
+		Boxes for customer details displayed
+		
+	*/
+	
+	include_once("inc/top.php");
+	
+	// Include the config file
+	include('inc/config.php');
 	
 	
 		
@@ -56,11 +67,32 @@
 	$result = $tourcms->start_new_booking($booking, $channel);
 	
 ?>
+<h1>Temporary booking, prompt for creation of confirmed booking</h1>
 <p>Are you sure you wish to book this Tour?</p>
 <form method="post" action="step5.php">
 	<input type="hidden" name="booking_id" value="<?php print $result->booking->booking_id; ?>" />
 	<input type="submit" name="submit" value="Go" />
 </form>
 
-<pre><?php print(htmlentities($booking->asXML())); ?></pre><br />
-<pre><?php print_r($result); ?></pre>
+<!--pre><?php print(htmlentities($booking->asXML())); ?></pre><br /-->
+<!-- Debug -->
+	<div id="debug">
+		<form>
+			<label><input type="radio" name="showdebug" value="none" checked /> Hide debug info</label>
+			<label><input type="radio" name="showdebug" value="simplexml" /> Show SimpleXML object</label>
+			<label><input type="radio" name="showdebug" value="rawxml" /> Show raw XML</label>
+		</form>
+		<pre class="simplexml"><?php print_r($result); ?></pre>
+		<pre class="rawxml"><?php 
+			// Add indentation to XML output
+			$dom = new DOMDocument('1.0');
+			$dom->preserveWhiteSpace = false;
+			$dom->formatOutput = true;
+			$dom->loadXML($result->asXML());
+			echo htmlspecialchars($dom->saveXML());
+		 ?></pre>
+	</div>
+	
+<?php 
+	include_once("inc/bottom.php");
+ ?>
