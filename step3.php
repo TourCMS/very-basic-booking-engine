@@ -33,6 +33,8 @@
 	
 	isset($_GET['tour']) ? $tour = (int)$_GET['tour'] : exit();
 	
+	isset($_GET['channel']) ? $channel = (int)$_GET['channel'] : exit();
+	
 	$rates = explode(",", $rate_string);
 	
 	$total_people = 0;
@@ -48,7 +50,7 @@
 		}
 	}
 	
-	$result = $tourcms->check_tour_availability($qs, $tour, $channel_id);
+	$result = $tourcms->check_tour_availability($qs, $tour, $channel);
 	
 	
 	isset($result->available_components->component) ? $num_components = count($result->available_components->component) : $num_components = 0;
@@ -68,6 +70,7 @@ endif;
 ?>
 <input type="hidden" name="total_people" value="<?php print $total_people; ?>" />
 <input type="hidden" name="tour" value="<?php print $tour; ?>" />
+<input type="hidden" name="channel" value="<?php print $channel; ?>" />
 <fieldset>
 <table>
 <?php
@@ -81,7 +84,7 @@ endif;
 				 ?> /></td>
 				<td><?php ($hdur>0) ? null : print $component->date_code ; ?></td>
 				<td><?php print prettify_date($component->start_date); ?></td>
-				<td><?php print ($component->end_date != $component->start_date ? prettify_date($component->end_date) : null ); ?></td>
+				<td><?php print ((string)$component->end_date <> (string)$component->start_date ? " to " . prettify_date($component->end_date) : null ); ?></td>
 				<td><?php 
 					// For hotel type products, lets show the room type
 					if ($hdur > 0):

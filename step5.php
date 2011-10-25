@@ -12,6 +12,7 @@
 	include('inc/config.php');
 	
 	$booking_id = (isset($_POST['booking_id']) ? (int)$_POST['booking_id'] : 0);
+	$channel = (isset($_POST['channel']) ? (int)$_POST['channel'] : 0);
 	
 	if($booking_id > 0) {
 	  
@@ -19,7 +20,7 @@
 	$booking = new SimpleXMLElement('<booking />'); 
 	$booking->addChild('booking_id', $booking_id); 
 		
-	$result = $tourcms->commit_new_booking($booking, $channel_id);
+	$result = $tourcms->commit_new_booking($booking, $channel);
 	
 	}
 	

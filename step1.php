@@ -16,8 +16,11 @@
 	// Tour ID based on previous selection should be in the querystring
 	isset($_GET['tour']) ? $tour = (int)$_GET['tour'] : exit();
 	
+	// Channel ID based on previous selection should be in the querystring
+	isset($_GET['channel']) ? $channel = (int)$_GET['channel'] : exit();
+	
 	// Query the TourCMS API, get back all the info on this Tour/Hotel
-	$result = $tourcms->show_tour($tour, $channel_id);
+	$result = $tourcms->show_tour($tour, $channel);
 	
 	// Jump straight to the bit of XML related to making a new booking panel
 	// includes rate and date info
@@ -84,7 +87,7 @@
 	
 	<input type="hidden" name="rates" value="<?php print implode(",", $rates); ?>" />
 	<input type="hidden" name="tour" value="<?php print $tour; ?>" />
-	
+	<input type="hidden" name="channel" value="<?php print $channel; ?>" />
 	<input type="submit" name="submit" value="Go" />
 </form>
 	

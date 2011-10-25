@@ -18,6 +18,9 @@
 	// Tour ID
 	isset($_POST['tour']) ? $tour = $_POST['tour'] : exit();
 	$qs .= "?tour=" . $tour;
+	// Channel ID
+	isset($_POST['channel']) ? $channel = $_POST['channel'] : exit();
+	$qs .= "&channel=" . $channel;
 	// Date
 	isset($_POST['date']) ? $date = $_POST['date'] : $date = "";
 	$qs .= "&date=" . $date;
@@ -54,7 +57,7 @@
 	$url_data->addChild('response_url', htmlentities($response_url . $qs)); 
 	
 	// Send the response URL to TourCMS
-	$result = $tourcms->get_booking_redirect_url($url_data, $channel_id);
+	$result = $tourcms->get_booking_redirect_url($url_data, $channel);
 	
 	// TourCMS should have returned a URL back to us, get that
 	$redirect_url = $result->url->redirect_url;

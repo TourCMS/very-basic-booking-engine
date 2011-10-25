@@ -16,6 +16,8 @@
 	
 	$component_key = isset($_POST['component_key']) ?  $_POST['component_key'] : null;
 
+	$channel = isset($_POST['channel']) ?  $_POST['channel'] : null;
+
 	$total_people = (int)$_POST['total_people'];
 	
 	$titles = $_POST['title'];
@@ -47,13 +49,14 @@
 			$customer->addChild('email', $email);
 	} 
 	
-	$result = $tourcms->start_new_booking($booking, $channel_id);
+	$result = $tourcms->start_new_booking($booking, $channel);
 	
 ?>
 <h1><?php print $title; ?></h1>
 <p>Are you sure you wish to book this Tour/Hotel?</p>
 <form method="post" action="step5.php">
 	<input type="hidden" name="booking_id" value="<?php print $result->booking->booking_id; ?>" />
+	<input type="hidden" name="channel" value="<?php print $channel; ?>" />
 	<input type="submit" name="submit" value="Go" />
 </form>
 	

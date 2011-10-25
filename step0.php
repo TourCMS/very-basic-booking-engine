@@ -18,7 +18,7 @@
 	include('inc/config.php');
 	
 	// Search all Tours/Hotels
-	$result = $tourcms->search_tours("", $channel_id);
+	$result = $tourcms->search_tours("order=tour_name", $channel_id);
 
 	// Print out an error if there is one
 	// Otherwise loop through Tours/Hotels and display them
@@ -27,7 +27,7 @@
 	else:
 		foreach ($result->tour as $tour):
 			?>
-			<li><a href="step1.php?tour=<?php print $tour->tour_id; ?>"><?php print $tour->tour_name; ?></a></li>
+			<li><a href="step1.php?tour=<?php print $tour->tour_id; ?>&amp;channel=<?php print $tour->channel_id; ?>"><?php print $tour->tour_name; ?></a></li>
 			<?php
 		endforeach;
 	endif;
