@@ -14,7 +14,7 @@
 	// Include the config file
 	include('inc/config.php');
 	
-	//$qs = "id=" . $tour;
+	
 	$qs = "";
 	
 	if($marketplace_account_id == 0)
@@ -79,10 +79,20 @@ endif;
 				<td><input type="radio" name="component_key" value="<?php print $component->component_key; ?>"<?php 
 					($counter==1) ? print "checked" : null;
 				 ?> /></td>
-				<td><?php print $component->date_code; ?></td>
-				<td><?php print $component->start_date; ?></td>
-				<td><?php print ($component->end_date != $component->start_date ? $component->end_date : null ); ?></td>
-				<td><?php print $component->note . $component->special_offer_note; ?></td>
+				<td><?php ($hdur>0) ? null : print $component->date_code ; ?></td>
+				<td><?php print prettify_date($component->start_date); ?></td>
+				<td><?php print ($component->end_date != $component->start_date ? prettify_date($component->end_date) : null ); ?></td>
+				<td><?php 
+					// For hotel type products, lets show the room type
+					if ($hdur > 0):
+							foreach ($component->price_breakdown->price_row as $price_row) {
+								print "<strong>" . $price_row . "</strong> ";
+							}
+							print "(" . $component->note . ")";
+					else:
+						print $component->note;
+					endif;
+				?></td>
 				<td><?php print $component->total_price_display; ?></td>
 			</tr>
 			<?php

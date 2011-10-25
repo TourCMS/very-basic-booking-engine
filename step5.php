@@ -26,7 +26,7 @@
 ?>
 <h1>Booking <?php print $result->booking->booking_id; ?> complete</h1>
 
-	
+<p><a href="step0.php">Start a new booking</a></p>
 <?php 
 	include_once("inc/debug.php");
 	include_once("inc/bottom.php");

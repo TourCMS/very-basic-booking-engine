@@ -3,9 +3,9 @@
 		step4.php
 		
 		
-		Calls "Check Availability" to see actual live availability
-		If there's a choice then that's displayed to the customer
-		Boxes for customer details displayed
+		Builds up an XML document representing the customers booking
+		Posts that XML to TourCMS creating a temporary booking
+		Temporary booking will be holding off space on any departures / rooms selected
 		
 	*/
 	$title = "Temporary booking created, prompt for creation of confirmed booking";
@@ -13,9 +13,6 @@
 	
 	// Include the config file
 	include('inc/config.php');
-	
-	
-		
 	
 	$component_key = isset($_POST['component_key']) ?  $_POST['component_key'] : null;
 
@@ -25,20 +22,6 @@
 	$firstnames = $_POST['firstname'];
 	$surnames = $_POST['surname'];
 	$email = $_POST['email'];
-	
-	 /*<booking>
-	   <total_customers>5</total_customers>
-	 <components>   <component_key>HJ9bTSGoEDggHp8dsqabg6svjs0oaZiIx06jUrncRCt3gqWj5nNZOhRzjICSqeaFeh0MxgEanx7Dd5oLR3fQB4qFNQjr0wzxJ18odj2px0pJY/X33Umude2SskWytAVLQjbrpDb2cY7a7VoDgxVzGMIylZ8xX1AKeBoPE+6j8ZI=</component_key>
-	</components>
-	<customers>
-	 <customer>
-	  <customer_id>4496</customer_id>
-	</customer>
-	 <customer>
-	  <customer_id>4496</customer_id>
-	</customer>
-	</customers>
-	  </booking>*/
 	  
 	// Create a new SimpleXMLElement to hold the booking details 
 	$booking = new SimpleXMLElement('<booking />'); 
@@ -68,7 +51,7 @@
 	
 ?>
 <h1><?php print $title; ?></h1>
-<p>Are you sure you wish to book this Tour?</p>
+<p>Are you sure you wish to book this Tour/Hotel?</p>
 <form method="post" action="step5.php">
 	<input type="hidden" name="booking_id" value="<?php print $result->booking->booking_id; ?>" />
 	<input type="submit" name="submit" value="Go" />
