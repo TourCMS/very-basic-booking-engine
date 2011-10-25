@@ -4,10 +4,10 @@
 		
 		Lists Tours/Hotels available in the API
 	*/
-
+	$title = "List of Tours/Hotels";
 	include_once("inc/top.php");
  ?>
- <h1>List of Tours/Hotels</h1>
+ <h1><?php print $title; ?></h1>
 	<p>Not strictly part of the booking process, included here for navigation purposes, all Tours/Hotels <a href="http://www.tourcms.com/support/api/mp/useful.php" target="_blank">made available for the API</a> should be listed below:</p>
 	
 	

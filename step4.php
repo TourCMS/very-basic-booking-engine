@@ -8,7 +8,7 @@
 		Boxes for customer details displayed
 		
 	*/
-	
+	$title = "Temporary booking created, prompt for creation of confirmed booking";
 	include_once("inc/top.php");
 	
 	// Include the config file
@@ -67,7 +67,7 @@
 	$result = $tourcms->start_new_booking($booking, $channel_id);
 	
 ?>
-<h1>Temporary booking created, prompt for creation of confirmed booking</h1>
+<h1><?php print $title; ?></h1>
 <p>Are you sure you wish to book this Tour?</p>
 <form method="post" action="step5.php">
 	<input type="hidden" name="booking_id" value="<?php print $result->booking->booking_id; ?>" />

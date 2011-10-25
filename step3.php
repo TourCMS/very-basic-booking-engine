@@ -8,7 +8,7 @@
 		Boxes for customer details displayed
 		
 	*/
-	
+	$title = "Availability confirmed, enter passenger details";
 	include_once("inc/top.php");
 	
 	// Include the config file
@@ -18,27 +18,28 @@
 	$qs = "";
 	
 	if($marketplace_account_id == 0)
-		isset($_POST['booking_key']) ? $booking_key = $_POST['booking_key'] : exit();
+	isset($_GET['booking_key']) ? $booking_key = $_GET['booking_key'] : exit();
 	
-	isset($_POST['date']) ? $date = $_POST['date'] : exit();
+	isset($_GET['date']) ? $date = $_GET['date'] : exit();
+		
 	
 	$qs .= "date=" . $date;
 	
-	isset($_POST['hdur']) ? $hdur = $_POST['hdur'] :  $hdur = null;
+	isset($_GET['hdur']) ? $hdur = $_GET['hdur'] :  $hdur = null;
 	
 	isset($hdur) ? $qs .= "&hdur=" . $hdur : null;
 	
-	isset($_POST['rates']) ? $rate_string = $_POST['rates'] : exit();
+	isset($_GET['rates']) ? $rate_string = $_GET['rates'] : exit();
 	
-	isset($_POST['tour']) ? $tour = (int)$_POST['tour'] : exit();
+	isset($_GET['tour']) ? $tour = (int)$_GET['tour'] : exit();
 	
 	$rates = explode(",", $rate_string);
 	
 	$total_people = 0;
 	
 	foreach ($rates as $rate) {
-		if(isset($_POST[$rate])) {
-			$rate_count = (int)$_POST[$rate];
+		if(isset($_GET[$rate])) {
+			$rate_count = (int)$_GET[$rate];
 			
 			if($rate_count > 0) {
 				$qs .= "&" . $rate . "=" . $rate_count;
@@ -53,7 +54,10 @@
 	isset($result->available_components->component) ? $num_components = count($result->available_components->component) : $num_components = 0;
 	
 ?>
-<h1>Availability confirmed, enter passenger details</h1>
+<h1><?php print $title; ?></h1>
+<?php 
+if($num_components>0) : ?>
+<p>We have checked availability based on the rate and date selection, the available components should be displayed below alongside boxes for customer detail entry.</p>
 <form method="post" action="step4.php" />
 <?php 
 if($marketplace_account_id == 0) :
@@ -67,12 +71,14 @@ endif;
 <fieldset>
 <table>
 <?php
-	
-	if($num_components > 0) {
+	$counter = 1;
+
 		foreach ($result->available_components->component as $component) {
 			?>
 			<tr>
-				<td><input type="radio" name="component_key" value="<?php print $component->component_key; ?>" /></td>
+				<td><input type="radio" name="component_key" value="<?php print $component->component_key; ?>"<?php 
+					($counter==1) ? print "checked" : null;
+				 ?> /></td>
 				<td><?php print $component->date_code; ?></td>
 				<td><?php print $component->start_date; ?></td>
 				<td><?php print ($component->end_date != $component->start_date ? $component->end_date : null ); ?></td>
@@ -80,8 +86,9 @@ endif;
 				<td><?php print $component->total_price_display; ?></td>
 			</tr>
 			<?php
+			$counter ++;
 		}
-	}
+	
 ?>
 </table>
 </fieldset>
@@ -110,7 +117,10 @@ endif;
 ?>
 <input type="submit" name="submit" value="Go" />
 </form>
-
+<?php 
+else:
+	print "Sorry no availability, please go back and try a different date / number of passengers";
+endif; ?>
 	
 <?php 
 	include_once("inc/debug.php");

@@ -5,7 +5,7 @@
 		Converts temp booking to a confirmed booking
 		
 	*/
-	
+	$title = "Booking complete";
 	include_once("inc/top.php");
 	
 	// Include the config file

@@ -1,98 +1,57 @@
-<?php
+<?php 
 	/*
 		step2.php
 		
-		Calls the "Show Tour" API method
-		Displays passenger number and date selection form
-		based on the data returned
-		
+		This page should be invisible to the user
+		they will be redirected from here to TourCMS
+		then subsequently on to step3.php
 	*/
-	
-	include_once("inc/top.php");
 	
 	// Include the config file
 	include('inc/config.php');
 	
-	// We need a booking key if we are calling the API as a Tour Operator
-	// Marketplace Partner accounts won't have one and don't need one
-	isset($_GET['booking_key']) ? $booking_key = $_GET['booking_key'] : $booking_key = "";
 	
-	// Tour ID based on previous selection should be in the querystring
-	isset($_GET['tour']) ? $tour = (int)$_GET['tour'] : exit();
-	
-	// Query the TourCMS API, get back all the info on this Tour/Hotel
-	$result = $tourcms->show_tour($tour, $channel_id);
-	
-	// Jump straight to the bit of XML related to making a new booking panel
-	// includes rate and date info
-	$booking_criteria = $result->tour->new_booking;
-?>
-<h1>Numbers of people and dates</h1>
-<form action="step3.php" method="post">
-	
-	<?php 
-		$rates = array();
-		
-		// Process the available rates for this Tour/Hotel
-		foreach ($booking_criteria->people_selection->rate as $rate) {
-			$rates[] = (string)$rate->rate_id;
-			// Process the labels
-			// Label_1 might be blank, for 
-			(string)$rate->label_1 != "" ? $label = $rate->label_1 : $label = "Number of People";
-			(string)$rate->label_2 != "" ? $label .= "(" . $rate->label_2 . ")" : null;
-			?>
-			<label><?php print $label; ?>
-				<select name="<?php print $rate->rate_id; ?>">
-					<?php
-						$count = (int)$rate->minimum;
-						$max = (int)$rate->maximum;
-						
-						while($count <= $max) {
-							?>
-								<option><?php print $count; ?></option>
-							<?php	
-							$count ++;
-						}
-					?>
-				</select>
-			</label>
-			<?php
+	// Process the form
+	$qs = "";
+	// Date
+	isset($_POST['date']) ? $date = $_POST['date'] : $date = "";
+	$qs .= "&date=" . $date;
+	// Duration
+	isset($_POST['hdur']) ? $hdur = $_POST['hdur'] : $hdur = "";
+	$qs .= "&hdur=" . $hdur;
+	// Rates & number of people
+	isset($_POST['rates']) ? $rate_string = $_POST['rates'] : exit();
+	$qs .= "&rates=" . $rate_string;
+	$rates = explode(",", $rate_string);
+	$total_people = 0;
+	foreach ($rates as $rate) {
+		if(isset($_POST[$rate])) {
+			$rate_count = (int)$_POST[$rate];
+			
+			if($rate_count > 0) {
+				$qs .= "&" . $rate . "=" . $rate_count;
+				$total_people += $rate_count;
+			}
 		}
+	}
+	$qs .= "&total_people=" . $total_people;
+
+	// Create a new SimpleXMLElement to hold the response url 
+	$url_data = new SimpleXMLElement('<url />'); 
+	
+	// Add the response url, TourCMS will redirect to this, appending the key
+	$response_url = str_replace("{tour_id}", (int)$_POST['tour'], $response_url) . $qs;
+	$url_data->addChild('response_url', htmlentities($response_url)); 
+	//$url_data->addChild('response_url', "http://tourcmsdev.macbook/scratch/api/bookings/step3.php?qs=" . urlencode("tour=" . (int)$_POST['tour'] . $qs)); 
+	
+	// Send the response URL to TourCMS
+	$result = $tourcms->get_booking_redirect_url($url_data, $channel_id);
+	
+	// TourCMS should have returned a URL back to us, get that
+	$redirect_url = $result->url->redirect_url;
+	
+	// Redirect the customer to the URL obtained from TourCMS
+	header("Location: " . $redirect_url);
+	exit();
 		
-		// Set some sensible default time		
-		$default_date = strtotime("+2 weeks Saturday");
-	?>
-	<label>Date:<input type="text" name="date" value="<?php print date("Y-m-d", $default_date); ?>" /></label>
-	<?php 
-		$date_type = $booking_criteria->date_selection->date_type;
-		if($date_type == "DATE_NIGHTS" || $date_type == "DATE_DAYS"):
-			$min_hdur = 7;
-			$max_hdur = 21;
-			$def_hdur = (int)$result->tour->duration;
-			?>
-			<select name="hdur">
-				<?php 
-					for($i=$min_hdur; $i<=$max_hdur; $i++):
-						?>
-						<option value="<?php print $i; ?>"<?php 
-						$i==$def_hdur ? print ' selected="selected"' : null;
-						?>><?php print $i; ?></option>
-						<?php
-					endfor;
-				?>
-			</select>
-			<?
-		endif;
-	?>
-	
-	<input type="hidden" name="rates" value="<?php print implode(",", $rates); ?>" />
-	<input type="hidden" name="tour" value="<?php print $tour; ?>" />
-	<input type="hidden" name="booking_key" value="<?php print $booking_key; ?>" />
-	
-	<input type="submit" name="submit" value="Go" />
-</form>
-	
-<?php 
-	include_once("inc/debug.php");
-	include_once("inc/bottom.php");
- ?>
+?><pre><?php htmlspecialchars(print($url_data->asXML())); ?></pre><pre><?php print_r($result); ?></pre><pre><?php print $redirect_url; ?></pre>

@@ -18,9 +18,9 @@
 	$result_type = 'simplexml';
 	
 	// Set the response URL, only required if being used by a Tour Operator
-	// Point this to ".....step2.php?tour_id={tour_id}"
+	// Point this to ".....step3.php?tour_id={tour_id}"
 	// Explanation here: http://www.tourcms.com/support/api/mp/booking_getkey.php
-	$response_url = "http://www.example.com/very-basic-booking-engine/step2.php?tour={tour_id}";
+	$response_url = "http://www.example.com/very-basic-booking-engine/step3.php?tour={tour_id}";
 	
 	// Create a new Instance of the TourCMS API class
 	$tourcms = new TourCMS($marketplace_account_id, $api_private_key, $result_type);
