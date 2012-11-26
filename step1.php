@@ -66,10 +66,17 @@
 	<?php 
 		$date_type = $booking_criteria->date_selection->date_type;
 		if($date_type == "DATE_NIGHTS" || $date_type == "DATE_DAYS"):
-			$min_hdur = 7;
-			$max_hdur = 21;
+			$min_hdur = $booking_criteria->date_selection->duration_minimum;
+			$max_hdur = $booking_criteria->date_selection->duration_maximum;
 			$def_hdur = (int)$result->tour->duration;
+			
+			if($min_hdur == $max_hdur):
 			?>
+				<input type="text" name="hdur" value="3" readonly="true" />
+			<?
+			else :
+			?>
+			
 			<select name="hdur">
 				<?php 
 					for($i=$min_hdur; $i<=$max_hdur; $i++):
@@ -82,6 +89,8 @@
 				?>
 			</select>
 			<?
+			endif;
+			
 		endif;
 	?>
 	
