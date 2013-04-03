@@ -23,7 +23,7 @@
 	// Print out an error if there is one
 	// Otherwise loop through Tours/Hotels and display them
 	if((string)$result->error != "OK") :
-		print $result->status;
+		print "<li>" . $result->error . "</li>";
 	else:
 		foreach ($result->tour as $tour):
 			?>
