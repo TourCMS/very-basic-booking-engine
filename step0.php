@@ -18,7 +18,7 @@
 	include('inc/config.php');
 	
 	// Search all Tours/Hotels
-	$result = $tourcms->search_tours("order=tour_name", $channel);
+	$result = $tourcms->search_tours("order=tour_name&404_tour_url=all", $channel);
 
 	// Print out an error if there is one
 	// Otherwise loop through Tours/Hotels and display them
