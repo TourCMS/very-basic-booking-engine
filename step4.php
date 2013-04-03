@@ -64,7 +64,7 @@
 // Hand off to standard booking engine
 if(!empty($result->booking->booking_engine_url)) {
 	?>
-	<p>Or <a href="<?php echo $result->booking->booking_engine_url; ?>" target="_blank">jump in to the hosted booking engine to complete this booking</a><br />(if you were building a hand-off to the hosted booking engine for real you would probably have skipped the customer name collection on the previous page).</p>
+	<p>Or <a href="<?php echo $result->booking->booking_engine_url; ?>" target="_blank">hand off to the hosted booking engine to complete this booking</a><br />(if you were building a hand-off to the hosted booking engine for real you would probably have skipped the customer name collection on the previous page).</p>
 	<?php
 }	
 ?>
