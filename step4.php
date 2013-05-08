@@ -33,7 +33,8 @@
 		$booking->addChild('booking_key', $_POST['booking_key']); 
 	
 	$components = $booking->addChild('components'); 
-	$component = $components->addChild('component_key', $component_key);
+	$component = $components->addChild('component');
+	$component->addChild('component_key', $component_key);
 	
 	$customers = $booking->addChild('customers');
 	  
